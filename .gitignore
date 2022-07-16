@@ -78,8 +78,8 @@ ENV/
 mlruns
 [0-9]
 
-# Prefect ignores
-prefect-storage
+# Credentials
+.env
 
 # Data formats ignores
 *.parquet
