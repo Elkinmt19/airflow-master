@@ -74,9 +74,9 @@ ENV/
 # MAC OS hidden files ignores
 .DS_Store
 
-# MLflow ignores
-mlruns
-[0-9]
+# Airflow logs
+dag_processor_manager
+scheduler
 
 # Credentials
 .env

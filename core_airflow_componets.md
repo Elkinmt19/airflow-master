@@ -14,3 +14,5 @@ Some important notes are the followings:
 - The scheduler schedules your tasks, the web server serves the UI, the database stores the metadata of Airflow.
 
 - airflow db init is the first command to execute to initialise Airflow
+
+To know more about Airflow refer to [Airflow Documentation](https://airflow.apache.org/docs/).
