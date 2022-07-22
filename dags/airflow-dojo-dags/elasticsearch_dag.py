@@ -5,7 +5,7 @@ from datetime import datetime
 from airflow import DAG
 from elasticsearch_plugin.hooks.elastic_hook import ElasticHook
 from airflow.operators.python import PythonOperator
-from plugins.elasticsearch_plugin.operators.postgres_to_elastic import PostgresToElasticOperator
+from elasticsearch_plugin.operators.postgres_to_elastic import PostgresToElasticOperator
 
 default_args = {
     "start_date": datetime(2020,1,1)
@@ -19,7 +19,7 @@ with DAG(
     "elasticsearch_dag",
     schedule_interval="@daily",
     default_args=default_args,
-    tags=["airflow-dojo-dags","Testing"],
+    tags=["airflow-dojo-dags","elasticsearch","plugins","Testing"],
     catchup=False
 ) as dag:
 

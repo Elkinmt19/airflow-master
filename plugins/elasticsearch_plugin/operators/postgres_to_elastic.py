@@ -14,7 +14,7 @@ class PostgresToElasticOperator(BaseOperator):
         sql,
         index,
         postgres_conn_id="postgres_default",
-        elastic_conn_id="elasticsearch_default",
+        elastic_conn_id="elacticsearch_default",
         *args,
         **kwargs
     ):
