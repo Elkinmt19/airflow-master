@@ -34,3 +34,37 @@ To sign in you must use the following credentials:
 - Password: airflow
 
 Now you can start exploring the Airflow's UI and working with Airflow in your Data workflows!!!
+
+## Best Practices
+The best practices are important in everything and of course when you're working with Airflow this is'nt any different. Some of the most common best practices in airflow are the followings:
+
+- Always test your tasks one by one before test the whole Data Pipeline.
+    - One efficient way to test a single task of a DAG is using the airflow's command line.
+
+- Test your DAG's locally before jump into production environments.
+    - This task can be achieve using the Airflow's command line.
+
+## Airflow CLI commands
+In order to be able to use the Airflow's command line, you first have to create a session into the docker container that runs the scheduler of our Airflow's installation, to do that you just have to run the following command:
+
+```bash 
+docker exec -it airflow-master_airflow-scheduler_1 /bin/bash
+``` 
+Now that you're inside the docker container, you can start using and testing the Airflow's CLI commands.
+
+Some useful commands are the following:
+
+- In order to list all the DAG's available, run the following command:
+    ```bash
+    airflow dags list
+    ```
+
+- To run a single tasks of a specific DAG, run the following command:
+    ```bash
+    airflow tasks test <dag_id> <task_id> <execution_date> (format='year-month-day')
+    ```
+
+- To trigger a DAG run of a specific DAG, use the following command:
+    ```bash
+    airflow dags trigger <dag_id>
+    ```
