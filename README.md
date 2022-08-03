@@ -17,10 +17,6 @@ Docker is an open-source project for automating the deployment of applications a
 Compose is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application’s services.
 
 
-## Author
-## Elkin Javier Guerra Galeano <img src="./assets/imgs/robotboy_fly.gif"/>
-
-Machine Learning Engineer, passionate about artificial intelligence and software development, I am currently exploring the world of MLOps, researching and gaining more and more knowledge on this topic. I am very interested in cloud computing and currently have experience working with AWS and GCP. 🐨 🚀
 
 ## Getting Started
 
@@ -68,3 +64,8 @@ Some useful commands are the following:
     ```bash
     airflow dags trigger <dag_id>
     ```
+
+## Author
+## Elkin Javier Guerra Galeano <img src="./assets/imgs/robotboy_fly.gif"/>
+
+Machine Learning Engineer, passionate about artificial intelligence and software development, I am currently exploring the world of MLOps, researching and gaining more and more knowledge on this topic. I am very interested in cloud computing and currently have experience working with AWS and GCP. 🐨 🚀
