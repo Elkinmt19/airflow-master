@@ -66,6 +66,7 @@ x-airflow-common:
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ./config:/opt/airflow/config
+    - ./tmp_files:/opt/airflow/tmp_files
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -228,8 +229,8 @@ services:
           echo "   https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html#before-you-begin"
           echo
         fi
-        mkdir -p /sources/logs /sources/dags /sources/plugins /sources/config
-        chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins,config}
+        mkdir -p /sources/logs /sources/dags /sources/plugins /sources/config /sources/tmp_files
+        chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins,config,tmp_files}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
     environment:
