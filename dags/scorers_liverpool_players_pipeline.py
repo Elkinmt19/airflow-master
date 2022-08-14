@@ -1,6 +1,5 @@
 # Built-in imports
 from datetime import datetime, timedelta
-from statistics import variance
 
 # External imports
 import requests
@@ -11,6 +10,7 @@ from airflow import DAG
 from airflow.sensors.http_sensor import HttpSensor
 from airflow.operators.python_operator import PythonOperator
 from airflow.models import Variable
+from airflow.operators.email_operator import EmailOperator
 
 default_args = {
     "owner": "Elkinmt19",
@@ -25,7 +25,23 @@ default_args = {
 
 HEADERS = { "X-Auth-Token": Variable.get("X-Auth-Token", deserialize_json=True) }
 
-def _fetch_top_scorers_premier_league() -> pd.DataFrame:
+def _top_liverpool_scorers_processing():
+    liverpool_players = pd.read_csv("/opt/airflow/tmp_files/liverpool_players.csv")
+    top_scorers_pl = pd.read_csv("/opt/airflow/tmp_files/top_scorers_pl.csv")
+
+    top_liverpool_scorers = pd.merge(liverpool_players, top_scorers_pl, on="id", how="inner")[[
+        "id","name_y","firstName","lastName","dateOfBirth_y","nationality_y","position_y"
+    ]].rename(columns={
+        "name_y":"name","dateOfBirth_y":"dateOfBirth","nationality_y":"nationality","position_y":"position"
+    })
+
+    top_liverpool_scorers.to_html(
+        "/opt/airflow/tmp_files/top_liverpool_scorers.html",
+        index=False
+    )
+
+
+def _fetch_top_scorers_premier_league():
     URI = 'https://api.football-data.org/v4/competitions/PL/scorers/?season=2021'
 
     response = requests.get(URI, headers=HEADERS)
@@ -35,24 +51,22 @@ def _fetch_top_scorers_premier_league() -> pd.DataFrame:
     for scorer in response.json()["scorers"]:
         top_scorers_json.append(scorer["player"])
 
-    pd.DataFrame(top_scorers_json).to_parquet(
-        "/opt/airflow/tmp_files/top_scorers_pl.parquet"
+    pd.DataFrame(top_scorers_json).to_csv(
+        "/opt/airflow/tmp_files/top_scorers_pl.csv",
+        index=False
     )
 
-    return 0
-
-def _fetch_liverpool_players() -> pd.DataFrame:
+def _fetch_liverpool_players():
     URI = 'https://api.football-data.org/v4/teams/64/?season=2021'
 
     response = requests.get(URI, headers=HEADERS)
 
     liverpool_players_json = response.json()["squad"]
 
-    pd.DataFrame(liverpool_players_json).to_parquet(
-        "/opt/airflow/tmp_files/liverpool_players.parquet"
+    pd.DataFrame(liverpool_players_json).to_csv(
+        "/opt/airflow/tmp_files/liverpool_players.csv",
+        index=False
     )
-
-    return 0
 
 with DAG(
     dag_id="scorers_liverpool_players",
@@ -92,3 +106,12 @@ with DAG(
         task_id="fetch_liverpool_players",
         python_callable=_fetch_liverpool_players
     )
+
+    top_liverpool_scorers_processing = PythonOperator(
+        task_id="top_liverpool_scorers_processing",
+        python_callable=_top_liverpool_scorers_processing
+    )
+
+    is_top_scorers_premier_league_available >> fetch_top_scorers_premier_league
+    is_liverpool_players_available >> fetch_liverpool_players
+    [fetch_top_scorers_premier_league, fetch_liverpool_players] >> top_liverpool_scorers_processing
