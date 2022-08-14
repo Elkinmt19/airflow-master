@@ -88,3 +88,4 @@ dag_id*
 *.parquet
 *.csv
 *.data
+*.html
