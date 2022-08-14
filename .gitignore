@@ -79,6 +79,7 @@ __pycache__
 dag_processor_manager
 scheduler
 dag_id*
+*.log
 
 # Credentials
 .env
