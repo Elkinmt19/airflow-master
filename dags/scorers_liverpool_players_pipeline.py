@@ -10,7 +10,6 @@ from airflow import DAG
 from airflow.sensors.http_sensor import HttpSensor
 from airflow.operators.python_operator import PythonOperator
 from airflow.models import Variable
-from airflow.operators.email_operator import EmailOperator
 
 default_args = {
     "owner": "Elkinmt19",
